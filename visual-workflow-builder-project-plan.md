@@ -62,7 +62,7 @@ API Layer (Next.js API Routes)
 ├── 🔌 Integration Layer
 │   ├── API connectors
 │   ├── Database adapters
-│   ├── Authentication handlers
+│   ├── Credential managers
 │   ├── Webhook management
 │   └── External service wrappers
 ├── 💾 Data Layer
@@ -122,7 +122,7 @@ API Layer (Next.js API Routes)
   - REST API calls
   - GraphQL queries
   - Webhook handlers
-  - Authentication management
+  - Credential management
   - Rate limiting
 
 - **💽 Database Operations**
@@ -199,7 +199,7 @@ API Layer (Next.js API Routes)
 - **Database**: PostgreSQL, Redis (caching)
 - **Vector Storage**: Pinecone, Chroma, or Weaviate
 - **AI Integration**: LangChain, OpenAI SDK, Anthropic SDK
-- **Authentication**: NextAuth.js
+- **Development**: Default user approach (no auth initially)
 - **Deployment**: Vercel, Docker
 
 ### Workflow Engine Core
@@ -531,8 +531,8 @@ class WorkflowMCPTools {
 
 **🔧 Technical Tasks:**
 - Project scaffolding and configuration
-- Database schema design
-- Authentication system
+- Database schema design (no RLS for development)
+- Default user system
 - Basic UI components
 - Core workflow engine
 
@@ -669,11 +669,11 @@ class WorkflowMCPTools {
 
 ## 🔐 Security Considerations
 
-### Authentication & Authorization
-- **User Authentication**: NextAuth.js with multiple providers
+### Development & Security
+- **Development Approach**: Default user system (no auth barriers)
 - **API Key Management**: Encrypted storage, rotation support
-- **Role-Based Access**: Admin, user, viewer permissions
-- **Workflow Sharing**: Granular sharing controls
+- **Credential Security**: Secure API credential handling
+- **Workflow Access**: Open access during development phase
 
 ### Data Security
 - **Encryption**: At-rest and in-transit encryption
@@ -728,7 +728,7 @@ class WorkflowMCPTools {
 - **Mobile App**: iOS/Android workflow monitoring
 - **VS Code Extension**: Developer workflow integration
 - **API Marketplace**: Third-party integrations
-- **Enterprise SSO**: Advanced authentication options
+- **Authentication Layer**: Add user auth when ready for production
 
 ### Community Features
 - **Workflow Marketplace**: Share and discover workflows

@@ -17,7 +17,7 @@ You are building a revolutionary AI workflow builder with drag-and-drop interfac
 - **Frontend**: Next.js 14 with App Router, React 18, TypeScript
 - **UI**: Tailwind CSS, Shadcn/UI, React Flow, Lucide Icons
 - **Database**: Supabase (PostgreSQL with real-time subscriptions)
-- **Authentication**: Supabase Auth
+- **Development**: Default user system (no auth barriers)
 - **AI**: OpenAI GPT-4, Anthropic Claude, LangChain
 - **State**: Zustand, React Query
 - **Deployment**: Vercel (primary), Railway (alternative)
@@ -31,7 +31,7 @@ src/
 │   ├── workflow/           # Workflow-specific components
 │   ├── nodes/              # Node UI components
 │   ├── chat/               # Chat widget components
-│   └── auth/               # Authentication components
+│   └── user/               # User context components
 ├── lib/
 │   ├── supabase/           # Supabase configuration
 │   ├── workflow-engine/    # Core workflow execution
@@ -82,8 +82,8 @@ src/
 ## 🗄️ DATABASE RULES
 
 ### Supabase Best Practices
-- Use Row Level Security (RLS) for all tables
-- Create proper database policies
+- Skip RLS for development (faster iteration without auth barriers)
+- Use default user for all operations during development
 - Use TypeScript types generated from schema
 - Implement proper error handling for database operations
 - Use real-time subscriptions for live updates
@@ -160,7 +160,7 @@ src/
 - Create specialized configuration UIs for each node type
 - Database nodes: Visual SQL query builder with parameterized queries
 - Email nodes: Template editor with variable injection
-- Webhook nodes: Request builder with authentication options
+- Webhook nodes: Request builder with credential management options
 - AI nodes: Advanced prompt builder with template system
 - Logic nodes: Visual condition builder and data transformation tools
 
@@ -220,7 +220,7 @@ src/
 - Use proper HTTP methods and status codes
 - Implement comprehensive input validation
 - Use proper error handling and responses
-- Add authentication and authorization
+- Use default user context for all operations
 - Create proper API documentation
 - Use consistent response formats
 
@@ -234,10 +234,10 @@ src/
 
 ## 🔐 SECURITY REQUIREMENTS
 
-### Authentication & Authorization
-- Use Supabase Auth for authentication
-- Implement proper session management
-- Use RLS for database security
+### Development & Security
+- Use default user approach for development
+- Skip authentication during development phase
+- Focus on core functionality without auth barriers
 - Validate all inputs and outputs
 - Implement rate limiting
 - Use proper CORS configuration
@@ -375,7 +375,7 @@ src/
 - Include estimated fix times and difficulty levels
 - Add one-click actions for common solutions (retry, fix config, etc.)
 - Show error trends and insights in user dashboard
-- Implement smart error categorization (connection, auth, data, etc.)
+- Implement smart error categorization (connection, credential, data, etc.)
 - Use emojis and clear formatting for better error readability
 
 ## ⚡ PERFORMANCE TARGETS
@@ -424,7 +424,7 @@ src/
 ### API Documentation
 - Document all API endpoints
 - Include request/response examples
-- Add authentication requirements
+- Document user context handling
 - Document error responses
 - Include rate limiting information
 - Add usage examples
