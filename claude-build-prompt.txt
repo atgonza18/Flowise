@@ -1,0 +1,191 @@
+🚀 **MISSION: BUILD THE WORLD'S MOST ADVANCED AI WORKFLOW BUILDER**
+
+You are about to embark on building a revolutionary visual AI workflow builder that will transform how people create and execute AI automations. This is your chance to create something truly extraordinary that will set a new standard in the industry.
+
+## 📋 **PROJECT OVERVIEW**
+You're building a Next.js 14 application with TypeScript that combines:
+- **Visual drag-and-drop workflow creation** (React Flow)
+- **AI-powered natural language workflow generation** 
+- **Comprehensive node configuration system** with visual builders
+- **Real-time execution with live monitoring**
+- **Advanced error handling with AI-powered solutions**
+- **MCP server integration** for programmatic access
+- **Enterprise-grade security and performance**
+
+## 📚 **DOCUMENTATION PROVIDED**
+I've attached comprehensive documentation files that contain EVERYTHING you need:
+
+1. **ai-workflow-builder-comprehensive-guide.md** - Complete technical specifications, architecture, database schema, UI mockups, and feature details
+2. **build-task-sequence.md** - Detailed 39-task sequence with encouraging guidance and clear success criteria  
+3. **.cursorrules** - Comprehensive coding standards, quality requirements, and implementation rules
+4. **visual-workflow-builder-project-plan.md** - Additional project planning and architecture details
+
+## 🎯 **YOUR APPROACH**
+
+### **STEP 1: STUDY THE DOCUMENTATION (5 minutes)**
+- Read through the comprehensive guide to understand the full scope
+- Review the 39-task sequence to understand the build order
+- Familiarize yourself with the coding standards in .cursorrules
+
+### **STEP 2: FOLLOW THE EXACT TASK SEQUENCE**
+- **CRITICAL**: Follow build-task-sequence.md exactly in order (Tasks 1-39)
+- Complete each task fully before moving to the next
+- Use the success criteria to validate each step
+- Reference the comprehensive guide for detailed specifications
+
+### **STEP 3: MAINTAIN EXCELLENCE STANDARDS**
+- Follow ALL rules in .cursorrules without compromise
+- Build production-ready, enterprise-grade code
+- Implement comprehensive error handling with AI-powered solutions
+- Create beautiful, intuitive user interfaces
+- Ensure perfect TypeScript typing throughout
+
+## 🏗️ **BUILD PRIORITIES**
+
+### **Phase 1: Foundation (Tasks 1-8) - NO AUTH APPROACH**
+- Set up Next.js 14 with App Router and TypeScript
+- Configure Supabase database WITHOUT RLS (no authentication)
+- SKIP Supabase Auth system (Task 3) - build without login/signup
+- Create base UI components with Shadcn/UI
+- Establish proper project structure with default user context
+
+### **Phase 2: Core Features (Tasks 9-23)**  
+- Build the workflow engine and execution system
+- Create the visual React Flow canvas
+- Implement the revolutionary node configuration system
+- Add credential management with AES-256-GCM encryption
+- Build variable system and testing framework
+
+### **Phase 3: Advanced Features (Tasks 24-31)**
+- Integrate MCP server capabilities
+- Add AI chat widget with natural language workflow creation
+- Implement real-time collaboration
+- Build advanced execution monitoring
+
+### **Phase 4: Production Ready (Tasks 32-39)**
+- Add AI-powered error handling with natural language explanations
+- Implement comprehensive testing suite
+- Optimize performance and security
+- Prepare for deployment
+
+## 🎨 **KEY FEATURES TO EXCEL AT**
+
+### **1. Comprehensive Node Configuration System**
+- Create the most advanced configuration system ever built
+- Visual prompt builders with drag-and-drop components
+- Three-tier configuration hierarchy (Global → Workflow → Node)
+- Real-time testing and validation
+- Node-specific UIs (Database query builder, Email templates, etc.)
+
+### **2. AI-Powered Error Handling** 
+- Transform technical errors into natural language explanations
+- Provide AI analysis with confidence scores
+- Offer multiple solution suggestions with step-by-step guidance
+- Implement automatic error recovery where possible
+- Add proactive error prevention with pre-execution warnings
+
+### **3. Beautiful User Experience**
+- Modern, professional interface that surpasses n8n
+- Smooth 60 FPS animations and interactions
+- Intuitive drag-and-drop workflow creation
+- Real-time execution visualization
+- Mobile-responsive design
+
+### **4. Enterprise-Grade Features**
+- Comprehensive security with encrypted credentials
+- Environment management (Dev/Staging/Production)
+- A/B testing for configurations
+- Real-time collaboration
+- Performance monitoring and analytics
+
+## ⚡ **QUALITY REQUIREMENTS**
+
+### **Code Quality (Non-Negotiable)**
+- ✅ Strict TypeScript with no `any` types
+- ✅ Comprehensive error handling for every operation
+- ✅ Beautiful, intuitive UI components
+- ✅ Proper database schema with RLS policies
+- ✅ Clean, maintainable code architecture
+- ✅ Performance optimization throughout
+
+### **User Experience (Critical)**
+- ✅ Every interaction must feel smooth and responsive
+- ✅ Error messages must be helpful and actionable
+- ✅ Configuration should be intuitive for non-technical users
+- ✅ Real-time updates must work flawlessly
+- ✅ Mobile experience must be excellent
+
+### **Security & Performance (Essential)**
+- ✅ All credentials encrypted with AES-256-GCM
+- ✅ Proper input validation and sanitization
+- ✅ Row Level Security on all database operations
+- ✅ Optimized queries and caching strategies
+- ✅ Rate limiting and security headers
+
+## 🎯 **SUCCESS CRITERIA**
+
+When you're done, this app should:
+- ✅ **Significantly surpass n8n** in user experience and features
+- ✅ **Work flawlessly** with all core functionality operational
+- ✅ **Be production-ready** with proper security and performance
+- ✅ **Demonstrate AI-powered features** that amaze users
+- ✅ **Have beautiful, professional UI** that rivals premium software
+- ✅ **Include comprehensive error handling** that educates users
+
+## 💪 **MOTIVATION & MINDSET**
+
+You are building something revolutionary that will:
+- **Democratize AI automation** for non-technical users
+- **Set new standards** for workflow builder applications  
+- **Showcase the future** of human-AI collaboration
+- **Create tremendous value** for thousands of users
+- **Establish your reputation** as an exceptional AI builder
+
+## 🎯 **CRITICAL: NO AUTHENTICATION APPROACH**
+
+**IMPORTANT**: Build this app WITHOUT authentication initially for faster development and testing.
+
+### **Database Setup:**
+- Use Supabase but DON'T enable RLS (Row Level Security)
+- Create a default user: `DEFAULT_USER = { id: '00000000-0000-0000-0000-000000000001', email: 'dev@example.com', name: 'Developer' }`
+- All data uses this default user - no user isolation needed
+
+### **What to SKIP:**
+- ❌ Login/signup pages and forms
+- ❌ Authentication middleware and protected routes  
+- ❌ Row Level Security policies
+- ❌ User session management
+- ❌ Task 3 (Authentication System) entirely
+
+### **What to BUILD:**
+- ✅ Complete workflow builder interface
+- ✅ All node types and advanced configurations
+- ✅ Execution engine with real-time monitoring
+- ✅ AI-powered error handling system
+- ✅ All advanced features (MCP, collaboration, etc.)
+
+### **Benefits:**
+- Immediate access to test all features
+- No login barriers during development
+- Faster iteration and debugging
+- Perfect the core experience first
+
+**You can add authentication later as a layer when ready for production.**
+
+## 🚀 **FINAL INSTRUCTIONS**
+
+1. **Start immediately** with Task 1 from build-task-sequence.md
+2. **SKIP Task 3** (Authentication) - use default user approach instead
+3. **Build systematically** - complete each task fully before moving on
+4. **Reference documentation** constantly for detailed specifications
+5. **Follow .cursorrules** strictly for code quality
+6. **Create something amazing** that you can be proud of
+
+Remember: You have all the knowledge, documentation, and guidance needed to build something extraordinary. Trust the process, follow the sequence, and create the most advanced AI workflow builder ever made!
+
+**Let's build the future of AI automation! 🚀✨**
+
+---
+
+BEGIN WITH TASK 1: PROJECT INITIALIZATION
+Create the Next.js 14 project structure and get ready to build something incredible!
