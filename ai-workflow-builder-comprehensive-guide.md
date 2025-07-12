@@ -55,20 +55,27 @@ A revolutionary visual AI workflow builder that democratizes AI automation throu
 
 ## 🗄️ Database Schema
 
-### **Supabase Tables**
+### **🎯 DEVELOPMENT APPROACH: NO AUTH FIRST**
+For faster development, we'll build without authentication initially. This allows immediate testing and iteration without login barriers.
+
+### **Development Database Schema (No RLS)**
 ```sql
--- Users table with authentication
+-- Users table (for structure, no auth initially)
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email TEXT UNIQUE NOT NULL,
-  name TEXT,
+  email TEXT UNIQUE NOT NULL DEFAULT 'dev@example.com',
+  name TEXT DEFAULT 'Developer',
   avatar TEXT,
   preferences JSONB DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Workflows table for storing canvas data
+-- Insert default development user
+INSERT INTO users (id, email, name) 
+VALUES ('00000000-0000-0000-0000-000000000001', 'dev@example.com', 'Developer');
+
+-- Workflows table for storing canvas data (no RLS)
 CREATE TABLE workflows (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -78,15 +85,15 @@ CREATE TABLE workflows (
   variables JSONB NOT NULL DEFAULT '{}',
   version INTEGER DEFAULT 1,
   status TEXT DEFAULT 'draft',
-  is_public BOOLEAN DEFAULT FALSE,
+  is_public BOOLEAN DEFAULT TRUE, -- Everything public for development
   tags TEXT[] DEFAULT '{}',
   thumbnail TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE
+  user_id UUID REFERENCES users(id) DEFAULT '00000000-0000-0000-0000-000000000001'
 );
 
--- Executions table for workflow runs
+-- Executions table for workflow runs (no RLS)
 CREATE TABLE executions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   status TEXT DEFAULT 'running',
@@ -99,7 +106,7 @@ CREATE TABLE executions (
   completed_at TIMESTAMP WITH TIME ZONE,
   duration INTEGER,
   workflow_id UUID REFERENCES workflows(id) ON DELETE CASCADE,
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE
+  user_id UUID REFERENCES users(id) DEFAULT '00000000-0000-0000-0000-000000000001'
 );
 
 -- Node definitions for available node types
@@ -119,10 +126,10 @@ CREATE TABLE node_definitions (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Chat sessions for AI conversations
+-- Chat sessions for AI conversations (no RLS)
 CREATE TABLE chat_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
+  user_id UUID NOT NULL DEFAULT '00000000-0000-0000-0000-000000000001',
   workflow_id UUID,
   messages JSONB DEFAULT '[]',
   context JSONB DEFAULT '{}',
@@ -143,27 +150,15 @@ CREATE TABLE workflow_templates (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Row Level Security policies
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE workflows ENABLE ROW LEVEL SECURITY;
-ALTER TABLE executions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE chat_sessions ENABLE ROW LEVEL SECURITY;
+-- NO RLS FOR DEVELOPMENT - SKIP AUTHENTICATION
+-- All data is accessible without authentication during development
+-- Add RLS policies later when implementing authentication
 
--- Create policies for data access
-CREATE POLICY "Users can manage their own data" ON users
-  FOR ALL USING (auth.uid() = id);
-
-CREATE POLICY "Users can manage their own workflows" ON workflows
-  FOR ALL USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can access public workflows" ON workflows
-  FOR SELECT USING (is_public = TRUE OR auth.uid() = user_id);
-
-CREATE POLICY "Users can manage their own executions" ON executions
-  FOR ALL USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can manage their own chat sessions" ON chat_sessions
-  FOR ALL USING (auth.uid() = user_id);
+-- DON'T ENABLE RLS YET:
+-- ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE workflows ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE executions ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE chat_sessions ENABLE ROW LEVEL SECURITY;
 
 -- Triggers for updated_at timestamps
 CREATE OR REPLACE FUNCTION handle_updated_at()

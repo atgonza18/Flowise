@@ -42,12 +42,12 @@ I've attached comprehensive documentation files that contain EVERYTHING you need
 
 ## 🏗️ **BUILD PRIORITIES**
 
-### **Phase 1: Foundation (Tasks 1-8)**
+### **Phase 1: Foundation (Tasks 1-8) - NO AUTH APPROACH**
 - Set up Next.js 14 with App Router and TypeScript
-- Configure Supabase database with complete schema
-- Implement Supabase Auth system
+- Configure Supabase database WITHOUT RLS (no authentication)
+- SKIP Supabase Auth system (Task 3) - build without login/signup
 - Create base UI components with Shadcn/UI
-- Establish proper project structure
+- Establish proper project structure with default user context
 
 ### **Phase 2: Core Features (Tasks 9-23)**  
 - Build the workflow engine and execution system
@@ -141,13 +141,45 @@ You are building something revolutionary that will:
 - **Create tremendous value** for thousands of users
 - **Establish your reputation** as an exceptional AI builder
 
+## 🎯 **CRITICAL: NO AUTHENTICATION APPROACH**
+
+**IMPORTANT**: Build this app WITHOUT authentication initially for faster development and testing.
+
+### **Database Setup:**
+- Use Supabase but DON'T enable RLS (Row Level Security)
+- Create a default user: `DEFAULT_USER = { id: '00000000-0000-0000-0000-000000000001', email: 'dev@example.com', name: 'Developer' }`
+- All data uses this default user - no user isolation needed
+
+### **What to SKIP:**
+- ❌ Login/signup pages and forms
+- ❌ Authentication middleware and protected routes  
+- ❌ Row Level Security policies
+- ❌ User session management
+- ❌ Task 3 (Authentication System) entirely
+
+### **What to BUILD:**
+- ✅ Complete workflow builder interface
+- ✅ All node types and advanced configurations
+- ✅ Execution engine with real-time monitoring
+- ✅ AI-powered error handling system
+- ✅ All advanced features (MCP, collaboration, etc.)
+
+### **Benefits:**
+- Immediate access to test all features
+- No login barriers during development
+- Faster iteration and debugging
+- Perfect the core experience first
+
+**You can add authentication later as a layer when ready for production.**
+
 ## 🚀 **FINAL INSTRUCTIONS**
 
 1. **Start immediately** with Task 1 from build-task-sequence.md
-2. **Build systematically** - complete each task fully before moving on
-3. **Reference documentation** constantly for detailed specifications
-4. **Follow .cursorrules** strictly for code quality
-5. **Create something amazing** that you can be proud of
+2. **SKIP Task 3** (Authentication) - use default user approach instead
+3. **Build systematically** - complete each task fully before moving on
+4. **Reference documentation** constantly for detailed specifications
+5. **Follow .cursorrules** strictly for code quality
+6. **Create something amazing** that you can be proud of
 
 Remember: You have all the knowledge, documentation, and guidance needed to build something extraordinary. Trust the process, follow the sequence, and create the most advanced AI workflow builder ever made!
 
