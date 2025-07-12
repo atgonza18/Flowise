@@ -217,7 +217,56 @@ abstract class BaseNode {
 // - Data Nodes: File Operations, JSON Processing, Variables
 ```
 
-### **3. Visual Canvas**
+### **3. Node Configuration System**
+```typescript
+// Comprehensive user configuration system
+interface NodeConfiguration {
+  // AI Node configurations
+  aiConfig: {
+    provider: 'openai' | 'anthropic' | 'google' | 'local'
+    model: string
+    apiKey: string | 'use_global'
+    parameters: {
+      temperature: number
+      maxTokens: number
+      topP: number
+      frequencyPenalty: number
+    }
+    prompts: {
+      systemMessage: string
+      userPrompt: string
+      templates: PromptTemplate[]
+    }
+    responseFormat: 'text' | 'json' | 'structured'
+  }
+  
+  // Integration configurations
+  integrationConfig: {
+    authentication: AuthConfig
+    endpoints: EndpointConfig
+    retryPolicy: RetryConfig
+    dataMappings: FieldMapping[]
+  }
+  
+  // Logic configurations
+  logicConfig: {
+    conditions: ConditionalLogic[]
+    variables: VariableDefinition[]
+    transformations: DataTransformation[]
+  }
+}
+
+// Configuration management
+class ConfigurationManager {
+  - validateConfiguration(config: NodeConfiguration): ValidationResult
+  - testConfiguration(config: NodeConfiguration, testData: any): Promise<TestResult>
+  - saveConfiguration(nodeId: string, config: NodeConfiguration): Promise<void>
+  - loadConfiguration(nodeId: string): Promise<NodeConfiguration>
+  - getConfigurationTemplate(nodeType: string): NodeConfiguration
+}
+```
+
+### **4. Visual Canvas**
 ```typescript
 // React Flow based workflow canvas
 function WorkflowCanvas() {
@@ -230,7 +279,7 @@ function WorkflowCanvas() {
 }
 ```
 
-### **4. MCP Server Integration**
+### **5. MCP Server Integration**
 ```typescript
 // Model Context Protocol server
 class MCPWorkflowServer {
@@ -240,6 +289,520 @@ class MCPWorkflowServer {
   - Programmatic workflow management
   - AI-powered workflow optimization
 }
+```
+
+---
+
+## 🔧 Comprehensive Node Configuration System
+
+### **Configuration Architecture Overview**
+Every node in the AI workflow builder is fully configurable by users through an intuitive interface. This system enables both technical and non-technical users to customize nodes according to their specific needs.
+
+### **Configuration Hierarchy**
+```typescript
+interface ConfigurationHierarchy {
+  // Global user-level configurations
+  globalConfig: {
+    apiKeys: {
+      openai: string
+      anthropic: string
+      google: string
+      customEndpoints: Record<string, string>
+    }
+    defaultSettings: {
+      aiParameters: AIParameters
+      retryPolicies: RetryPolicy
+      securitySettings: SecurityConfig
+    }
+  }
+  
+  // Workflow-level configurations
+  workflowConfig: {
+    workflowId: string
+    workflowVariables: Record<string, any>
+    environmentSettings: EnvironmentConfig
+    sharedCredentials: CredentialConfig
+  }
+  
+  // Node-level configurations (highest priority)
+  nodeConfig: {
+    nodeId: string
+    nodeType: string
+    customSettings: NodeSpecificConfig
+    overrides: ConfigurationOverrides
+  }
+}
+```
+
+### **Configuration UI Components**
+
+#### **Main Configuration Panel**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   LLM Chat Node Configuration                │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🤖 Model Settings                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Provider: [OpenAI ▼] Model: [GPT-4 ▼] [Test Connection]│ │
+│  │ Temperature: [0.7] ──────────────── [━━━━━━●─] (0-2.0)  │ │
+│  │ Max Tokens: [1000] ─────────────── [1000] (1-8192)     │ │
+│  │ Top P: [1.0] ──────────────────── [━━━━━━━●] (0-1.0)    │ │
+│  │ Frequency Penalty: [0.0] ──────── [●━━━━━━━] (-2.0-2.0) │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🔑 Authentication                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ○ Use Global API Key (sk-...abc123)                    │ │
+│  │ ● Use Custom API Key                                   │ │
+│  │   API Key: [sk-•••••••••••••••••••••••••] [👁️] [Test] │ │
+│  │   💡 Tip: API keys are encrypted and secure            │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ✍️ Prompt Configuration                [📚 Templates ▼]    │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ System Message:                                         │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │You are a helpful AI assistant specialized in        │ │ │
+│  │ │analyzing text and providing structured insights.    │ │ │
+│  │ │Always be accurate and cite your reasoning.          │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  │                                                         │ │
+│  │ User Prompt:                        [💡 Variables ▼]   │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │Please analyze the following text and provide:       │ │ │
+│  │ │                                                     │ │ │
+│  │ │Text: {{input_text}}                                │ │ │
+│  │ │                                                     │ │ │
+│  │ │Analysis type: {{analysis_type}}                    │ │ │
+│  │ │                                                     │ │ │
+│  │ │Provide results in the following format:            │ │ │
+│  │ │{                                                    │ │ │
+│  │ │  "sentiment": "positive/negative/neutral",         │ │ │
+│  │ │  "key_themes": ["theme1", "theme2"],              │ │ │
+│  │ │  "confidence": 0.95                               │ │ │
+│  │ │}                                                    │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  │                                                         │ │
+│  │ 🔧 Available Variables:                                │ │
+│  │ • {{input_text}} - Text from previous node            │ │
+│  │ • {{user_name}} - Current user name                   │ │
+│  │ • {{timestamp}} - Current timestamp                   │ │
+│  │ • {{workflow.variable_name}} - Workflow variables     │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📊 Response Configuration                                  │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Format: ● JSON ○ Plain Text ○ Structured               │ │
+│  │ ☑️ Validate JSON response                               │ │
+│  │ ☑️ Include confidence scores                            │ │
+│  │ ☑️ Enable streaming (real-time response)               │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🧪 Testing                                                 │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Test Input:                                            │ │
+│  │ [This is sample text for testing the configuration]    │ │
+│  │ [🧪 Test Configuration] [📋 Use Test Data] [💾 Save]    │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [💾 Save Configuration] [🔄 Reset] [❌ Cancel]              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **Visual Prompt Builder**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Visual Prompt Builder                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📝 Prompt Components                      [📚 Load Template]│
+│                                                             │
+│  ┌─ System Message ──────────────────────────────────────┐  │
+│  │ [You are an expert...] ──────────────────── [±] [🗑️] │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                             │
+│  ┌─ Context Setup ───────────────────────────────────────┐  │
+│  │ [Here is the task context...] ───────────── [±] [🗑️] │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                             │
+│  ┌─ Main Instruction ────────────────────────────────────┐  │
+│  │ [Please analyze {{input_text}} and...] ─── [±] [🗑️] │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                             │
+│  ┌─ Output Format ───────────────────────────────────────┐  │
+│  │ [Return results as JSON with...] ────────── [±] [🗑️] │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                             │
+│  [➕ Add Component ▼] [🔀 Reorder] [👁️ Preview]             │
+│                                                             │
+│  📋 Final Prompt Preview:                                   │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ You are an expert data analyst.                        │ │
+│  │                                                         │ │
+│  │ Here is the task context: The user wants to analyze    │ │
+│  │ text for sentiment and key insights.                   │ │
+│  │                                                         │ │
+│  │ Please analyze {{input_text}} and provide detailed     │ │
+│  │ insights about sentiment, themes, and key points.      │ │
+│  │                                                         │ │
+│  │ Return results as JSON with the following structure:   │ │
+│  │ { "sentiment": "...", "themes": [...], "points": [...]}│ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [💾 Save to Node] [📋 Copy] [🧪 Test] [🔄 Reset]           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Credential Management System**
+
+#### **Security Architecture**
+```typescript
+// Multi-layered security for credentials
+interface CredentialSecurity {
+  encryption: {
+    algorithm: 'AES-256-GCM'
+    keyRotation: 'automatic'
+    storageLocation: 'supabase_vault'
+  }
+  
+  access: {
+    authentication: 'supabase_auth'
+    authorization: 'row_level_security'
+    auditLogging: 'comprehensive'
+  }
+  
+  management: {
+    expiration: 'configurable'
+    rotation: 'automatic'
+    sharing: 'workflow_scoped'
+  }
+}
+```
+
+#### **Credential Management UI**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Credential Management                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🔑 Global API Keys                                         │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ OpenAI API Key:                                         │ │
+│  │ [sk-•••••••••••••••••••••••••••••••] [👁️] [🔄] [🗑️]  │ │
+│  │ Status: ✅ Valid (Last tested: 2 mins ago)              │ │
+│  │                                                         │ │
+│  │ Anthropic API Key:                                      │ │
+│  │ [sk-ant-••••••••••••••••••••••••••] [👁️] [🔄] [🗑️]   │ │
+│  │ Status: ✅ Valid (Last tested: 5 mins ago)              │ │
+│  │                                                         │ │
+│  │ [➕ Add New API Key]                                    │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🏢 Database Connections                                    │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Production Database:                                    │ │
+│  │ Host: [prod-db.company.com] Port: [5432]               │ │
+│  │ Database: [production] User: [api_user]                │ │
+│  │ Password: [••••••••••] [Test Connection] [Edit]        │ │
+│  │ Status: ✅ Connected (Latency: 45ms)                    │ │
+│  │                                                         │ │
+│  │ [➕ Add Database Connection]                            │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🌐 Custom API Endpoints                                    │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Internal API:                                           │ │
+│  │ URL: [https://api.internal.com] [🔗]                   │ │
+│  │ Auth: [Bearer Token] [••••••••••] [Test] [Edit]        │ │
+│  │ Status: ✅ Available (Response: 120ms)                  │ │
+│  │                                                         │ │
+│  │ [➕ Add API Endpoint]                                   │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚙️ Security Settings                                       │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ☑️ Enable automatic key rotation (90 days)              │ │
+│  │ ☑️ Require re-authentication for sensitive operations   │ │
+│  │ ☑️ Log all credential access                            │ │
+│  │ ☑️ Enable credential sharing within team               │ │
+│  │                                                         │ │
+│  │ 🔐 Encryption: AES-256-GCM ✅ Active                   │ │
+│  │ 📊 Audit Log: [View Recent Activity]                   │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [💾 Save All] [🔄 Test All Connections] [📥 Export Config] │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Template System**
+
+#### **Configuration Templates**
+```typescript
+// Pre-built templates for common use cases
+const ConfigurationTemplates = {
+  aiNodes: {
+    'sentiment-analysis': {
+      name: 'Sentiment Analysis',
+      description: 'Analyze text sentiment with confidence scores',
+      config: {
+        model: 'gpt-3.5-turbo',
+        temperature: 0.3,
+        systemMessage: 'You are a sentiment analysis expert.',
+        prompt: 'Analyze the sentiment of: {{input_text}}',
+        responseFormat: 'json'
+      }
+    },
+    
+    'content-generation': {
+      name: 'Content Generator',
+      description: 'Generate content based on topics and style',
+      config: {
+        model: 'gpt-4',
+        temperature: 0.8,
+        systemMessage: 'You are a creative content writer.',
+        prompt: 'Create {{content_type}} about {{topic}} in {{style}} style',
+        responseFormat: 'text'
+      }
+    },
+    
+    'code-review': {
+      name: 'Code Reviewer',
+      description: 'Review code for bugs and improvements',
+      config: {
+        model: 'gpt-4',
+        temperature: 0.1,
+        systemMessage: 'You are an expert code reviewer.',
+        prompt: 'Review this code for bugs and improvements:\n{{code}}',
+        responseFormat: 'structured'
+      }
+    }
+  },
+  
+  integrationNodes: {
+    'rest-api': {
+      name: 'REST API Call',
+      description: 'Make HTTP requests to REST APIs',
+      config: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 30000,
+        retryCount: 3
+      }
+    },
+    
+    'database-query': {
+      name: 'Database Query',
+      description: 'Execute SQL queries safely',
+      config: {
+        queryType: 'SELECT',
+        timeout: 30000,
+        parameterized: true,
+        connectionPool: true
+      }
+    }
+  }
+}
+```
+
+### **Variable System**
+
+#### **Dynamic Variable Injection**
+```typescript
+// Context-aware variable system
+interface VariableContext {
+  // Data from previous nodes in workflow
+  previousOutputs: {
+    [nodeId: string]: any
+  }
+  
+  // User-defined workflow variables
+  workflowVariables: {
+    [variableName: string]: {
+      value: any
+      type: 'string' | 'number' | 'boolean' | 'object'
+      description: string
+      readonly: boolean
+    }
+  }
+  
+  // System-provided variables
+  systemVariables: {
+    timestamp: Date
+    userId: string
+    workflowId: string
+    executionId: string
+    userEmail: string
+    userName: string
+  }
+  
+  // Environment variables
+  environmentVariables: {
+    [key: string]: string
+  }
+}
+
+// Variable resolution engine
+class VariableResolver {
+  static resolve(template: string, context: VariableContext): string {
+    return template.replace(/\{\{([^}]+)\}\}/g, (match, expression) => {
+      return this.evaluateExpression(expression, context)
+    })
+  }
+  
+  private static evaluateExpression(expression: string, context: VariableContext): string {
+    // Safe evaluation of variable expressions
+    // Supports: {{variable}}, {{object.property}}, {{workflow.varname}}
+  }
+}
+```
+
+#### **Variable Management UI**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Variable Manager                          │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📊 Available Variables                                     │
+│                                                             │
+│  🔧 System Variables                                        │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ {{timestamp}} - Current execution time                 │ │
+│  │ {{userId}} - Current user ID                           │ │
+│  │ {{userName}} - Current user name                       │ │
+│  │ {{workflowId}} - Current workflow ID                   │ │
+│  │ {{executionId}} - Current execution ID                 │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🎯 Workflow Variables                     [➕ Add Variable]│
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ {{api_endpoint}} - Main API URL                        │ │
+│  │ Type: String | Value: https://api.example.com [Edit]   │ │
+│  │                                                         │ │
+│  │ {{batch_size}} - Processing batch size                 │ │
+│  │ Type: Number | Value: 100 [Edit]                       │ │
+│  │                                                         │ │
+│  │ {{debug_mode}} - Enable debug logging                  │ │
+│  │ Type: Boolean | Value: false [Edit]                    │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🔗 Node Outputs                                            │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ {{node_1.output}} - Text from first node               │ │
+│  │ {{node_2.sentiment}} - Sentiment analysis result      │ │
+│  │ {{node_3.data.items}} - Array from API response       │ │
+│  │ {{previous.all}} - All data from previous node        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🧪 Variable Tester                                         │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Test Expression:                                        │ │
+│  │ [Hello {{userName}}, processing {{batch_size}} items]  │ │
+│  │                                                         │ │
+│  │ Preview:                                               │ │
+│  │ Hello John Doe, processing 100 items                   │ │
+│  │                                                         │ │
+│  │ [🧪 Test] [📋 Copy] [💾 Save Expression]                │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Testing & Validation System**
+
+#### **Configuration Testing**
+```typescript
+// Comprehensive testing for node configurations
+class ConfigurationTester {
+  async testNodeConfiguration(
+    node: BaseNode, 
+    config: NodeConfiguration, 
+    testData: any
+  ): Promise<TestResult> {
+    const results: TestResult = {
+      success: false,
+      validationResults: [],
+      executionResults: null,
+      performance: null,
+      errors: []
+    }
+    
+    try {
+      // 1. Schema validation
+      results.validationResults = this.validateConfiguration(config, node.getConfigSchema())
+      
+      // 2. Credential testing
+      await this.testCredentials(config)
+      
+      // 3. Execution testing
+      results.executionResults = await this.executeWithTestData(node, config, testData)
+      
+      // 4. Performance testing
+      results.performance = await this.measurePerformance(node, config, testData)
+      
+      results.success = true
+    } catch (error) {
+      results.errors.push(error.message)
+    }
+    
+    return results
+  }
+}
+```
+
+#### **Testing Interface**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Configuration Tester                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🧪 Test Configuration                                      │
+│                                                             │
+│  📝 Test Input                            [📁 Load Sample] │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ {                                                       │ │
+│  │   "input_text": "This is a sample text for testing",   │ │
+│  │   "analysis_type": "sentiment",                        │ │
+│  │   "format": "detailed"                                 │ │
+│  │ }                                                       │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [🧪 Run Test] [⚡ Quick Test] [🔄 Stress Test]              │
+│                                                             │
+│  📊 Test Results                                            │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ✅ Schema Validation: Passed                            │ │
+│  │ ✅ Credential Test: Connected successfully              │ │
+│  │ ✅ Execution Test: Completed in 1.2s                   │ │
+│  │ ✅ Response Format: Valid JSON structure               │ │
+│  │                                                         │ │
+│  │ 📈 Performance:                                         │ │
+│  │ • Response Time: 1,247ms                               │ │
+│  │ • Tokens Used: 156 (prompt: 89, completion: 67)       │ │
+│  │ • API Cost: $0.0023                                    │ │
+│  │                                                         │ │
+│  │ 📤 Output:                                              │ │
+│  │ {                                                       │ │
+│  │   "sentiment": "neutral",                              │ │
+│  │   "confidence": 0.87,                                  │ │
+│  │   "key_themes": ["testing", "configuration"]          │ │
+│  │ }                                                       │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚠️ Warnings & Suggestions                                  │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ • Consider reducing temperature for more consistent     │ │
+│  │   results in production                                 │ │
+│  │ • Current token usage is 65% of limit                  │ │
+│  │ • Response time is acceptable for real-time use        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [💾 Save Test Case] [📋 Copy Results] [🔄 Run Again]       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## 🎨 User Interface Components
@@ -292,6 +855,349 @@ class MCPWorkflowServer {
 ├─────────────────────────────────────┤
 │ [Type your message...] [Send]       │
 └─────────────────────────────────────┘
+```
+
+### **Advanced Configuration Features**
+
+#### **Environment-Based Configuration**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Environment Configuration                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🌍 Environment Settings          [Current: Production ▼]  │
+│                                                             │
+│  📊 Configuration Comparison                                │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │          │ Development │   Staging   │ Production │      │ │
+│  │ ─────────┼─────────────┼─────────────┼─────────────┤     │ │
+│  │ Model    │ GPT-3.5     │ GPT-4       │ GPT-4      │     │ │
+│  │ Temp     │ 0.8         │ 0.5         │ 0.3        │     │ │
+│  │ Tokens   │ 500         │ 1000        │ 2000       │     │ │
+│  │ Timeout  │ 30s         │ 60s         │ 120s       │     │ │
+│  │ Retries  │ 1           │ 2           │ 3          │     │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚙️ Environment-Specific Settings                           │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Development:                                            │ │
+│  │ ☑️ Enable debug logging                                 │ │
+│  │ ☑️ Use mock API responses                               │ │
+│  │ ☑️ Disable rate limiting                                │ │
+│  │                                                         │ │
+│  │ Production:                                             │ │
+│  │ ☑️ Enable performance monitoring                        │ │
+│  │ ☑️ Use production API keys                              │ │
+│  │ ☑️ Enable advanced security                             │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [🚀 Deploy to Environment] [📋 Copy Config] [💾 Save]      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **A/B Testing Configuration**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    A/B Test Configuration                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🧪 Experiment Setup                                        │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Test Name: [GPT-4 vs Claude Performance Test]          │ │
+│  │ Description: [Compare response quality and speed]       │ │
+│  │ Duration: [7 days] Start: [2024-01-01] End: [Auto]     │ │
+│  │                                                         │ │
+│  │ Traffic Split:                                          │ │
+│  │ Variant A (Control): [50%] ████████████████████████     │ │
+│  │ Variant B (Test):    [50%] ████████████████████████     │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚙️ Variant Configurations                                  │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Variant A (Control):                                    │ │
+│  │ • Model: GPT-4                                          │ │
+│  │ • Temperature: 0.7                                      │ │
+│  │ • Max Tokens: 1000                                      │ │
+│  │                                                         │ │
+│  │ Variant B (Test):                                       │ │
+│  │ • Model: Claude-3                                       │ │
+│  │ • Temperature: 0.7                                      │ │
+│  │ • Max Tokens: 1000                                      │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📊 Success Metrics                                         │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Primary: ● Response Quality Score                       │ │
+│  │ Secondary: ○ Response Time ○ User Satisfaction          │ │
+│  │ ○ Cost per Request ○ Error Rate ○ Token Efficiency     │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [🚀 Start Test] [📊 View Results] [⏸️ Pause] [🗑️ Delete]    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Node-Specific Configuration Examples**
+
+#### **Database Node Configuration**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Database Node Configuration                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🏢 Connection Settings                                     │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Database Type: [PostgreSQL ▼]                          │ │
+│  │ ○ Use Global Connection (Production DB)                │ │
+│  │ ● Custom Connection                                     │ │
+│  │   Host: [localhost] Port: [5432]                       │ │
+│  │   Database: [ai_workflows] Schema: [public]            │ │
+│  │   Username: [api_user] Password: [••••••] [Test]       │ │
+│  │   SSL Mode: [Require ▼] Pool Size: [10]                │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📝 Query Configuration                                     │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Query Type: ● SELECT ○ INSERT ○ UPDATE ○ DELETE        │ │
+│  │                                                         │ │
+│  │ SQL Query:                            [📚 Templates ▼] │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │SELECT id, name, email, created_at                   │ │ │
+│  │ │FROM users                                            │ │ │
+│  │ │WHERE created_at >= {{start_date}}                   │ │ │
+│  │ │  AND status = {{user_status}}                       │ │ │
+│  │ │ORDER BY created_at DESC                             │ │ │
+│  │ │LIMIT {{limit_count}}                                │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  │                                                         │ │
+│  │ 🔒 Query Parameters (Prevents SQL Injection):          │ │
+│  │ • {{start_date}} - Date (from previous node)           │ │
+│  │ • {{user_status}} - String (workflow variable)         │ │
+│  │ • {{limit_count}} - Number (default: 100)              │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚙️ Execution Settings                                      │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Timeout: [30] seconds                                   │ │
+│  │ Max Rows: [1000] (0 = unlimited)                       │ │
+│  │ Retry Count: [3] Retry Delay: [1000]ms                 │ │
+│  │ ☑️ Use prepared statements                               │ │
+│  │ ☑️ Enable query logging                                 │ │
+│  │ ☑️ Stream large result sets                             │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [🧪 Test Query] [💾 Save] [❌ Cancel]                       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **Email Node Configuration**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                 Email Node Configuration                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📧 Email Provider                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Provider: [SendGrid ▼] (SendGrid, AWS SES, SMTP)       │ │
+│  │ API Key: [sg.•••••••••••••••••••••••] [👁️] [Test]      │ │
+│  │ From Email: [noreply@company.com] [Verify]              │ │
+│  │ From Name: [AI Workflow System]                         │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ✉️ Email Content                      [📚 Templates ▼]     │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ To: [{{recipient_email}}] CC: [{{cc_emails}}]          │ │
+│  │ Subject: [{{email_subject}}]                           │ │
+│  │                                                         │ │
+│  │ Body Format: ● HTML ○ Plain Text ○ Both                │ │
+│  │                                                         │ │
+│  │ HTML Body:                                              │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │<html>                                               │ │ │
+│  │ │<body>                                               │ │ │
+│  │ │  <h2>Hello {{user_name}}</h2>                       │ │ │
+│  │ │  <p>Your workflow has completed successfully.</p>   │ │ │
+│  │ │  <p>Results: {{workflow_results}}</p>               │ │ │
+│  │ │  <p>Best regards,<br>AI Workflow Team</p>           │ │ │
+│  │ │</body>                                              │ │ │
+│  │ │</html>                                              │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📎 Attachments                                             │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ☑️ Attach workflow results as JSON                      │ │
+│  │ ☑️ Include execution logs                               │ │
+│  │ ○ Custom attachment: [{{file_path}}]                   │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [📧 Send Test Email] [💾 Save] [❌ Cancel]                  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **Webhook Node Configuration**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Webhook Node Configuration                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  🌐 Webhook Settings                                        │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ URL: [https://api.external.com/webhook]                │ │
+│  │ Method: [POST ▼] (GET, POST, PUT, PATCH, DELETE)       │ │
+│  │ Timeout: [30] seconds                                   │ │
+│  │ Retry Policy: [3] attempts with [2] second delays      │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🔑 Authentication                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Auth Type: [Bearer Token ▼]                            │ │
+│  │ (None, Bearer Token, API Key, Basic Auth, Custom)      │ │
+│  │ Token: [Bearer •••••••••••••••••••••] [👁️] [Test]      │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📋 Headers                               [➕ Add Header]   │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Content-Type: [application/json]                       │ │
+│  │ User-Agent: [AI-Workflow-Builder/1.0]                  │ │
+│  │ X-Workflow-ID: [{{workflow_id}}]                       │ │
+│  │ X-Custom-Header: [{{custom_value}}]                    │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📤 Request Body                                            │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Body Type: ● JSON ○ Form Data ○ Raw Text               │ │
+│  │                                                         │ │
+│  │ JSON Payload:                                           │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │{                                                    │ │ │
+│  │ │  "event": "workflow_completed",                     │ │ │
+│  │ │  "workflow_id": "{{workflow_id}}",                  │ │ │
+│  │ │  "user_id": "{{user_id}}",                          │ │ │
+│  │ │  "timestamp": "{{timestamp}}",                      │ │ │
+│  │ │  "data": {{previous_node_output}},                  │ │ │
+│  │ │  "metadata": {                                      │ │ │
+│  │ │    "execution_time": "{{execution_duration}}",     │ │ │
+│  │ │    "status": "success"                              │ │ │
+│  │ │  }                                                  │ │ │
+│  │ │}                                                    │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ✅ Response Handling                                       │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Success Status Codes: [200, 201, 202]                  │ │
+│  │ Extract Response Data: [{{response.data.id}}]          │ │
+│  │ ☑️ Log response headers                                 │ │
+│  │ ☑️ Validate JSON response                               │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [🧪 Test Webhook] [💾 Save] [❌ Cancel]                     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Configuration Import/Export System**
+
+#### **Configuration Export Interface**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Configuration Export                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📤 Export Options                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Export Scope:                                           │ │
+│  │ ● Current Node Only                                     │ │
+│  │ ○ All Workflow Nodes                                    │ │
+│  │ ○ User's Global Configuration                           │ │
+│  │                                                         │ │
+│  │ Include:                                                │ │
+│  │ ☑️ Node configurations                                  │ │
+│  │ ☑️ API keys (encrypted)                                 │ │
+│  │ ☑️ Template definitions                                 │ │
+│  │ ☑️ Variable mappings                                    │ │
+│  │ ☐ Execution history                                     │ │
+│  │ ☐ Test cases                                            │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🔐 Security Options                                        │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ● Encrypt sensitive data                                │ │
+│  │ ○ Remove all credentials                                │ │
+│  │ ○ Anonymize user data                                   │ │
+│  │                                                         │ │
+│  │ Export Password: [••••••••••] (for encryption)         │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  📋 Export Format                                           │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ● JSON (Standard)                                       │ │
+│  │ ○ YAML (Human-readable)                                 │ │
+│  │ ○ Workflow Template (Shareable)                        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [📥 Export Configuration] [👁️ Preview] [❌ Cancel]          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### **Configuration Import Interface**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Configuration Import                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  📤 Import Source                                           │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ 📁 [Choose File] ai_workflow_config.json               │ │
+│  │    Size: 15.2 KB | Modified: 2024-01-15                │ │
+│  │                                                         │ │
+│  │ OR                                                      │ │
+│  │                                                         │ │
+│  │ 📋 Paste Configuration:                                 │ │
+│  │ ┌─────────────────────────────────────────────────────┐ │ │
+│  │ │{                                                    │ │ │
+│  │ │  "version": "1.0",                                  │ │ │
+│  │ │  "nodes": [                                         │ │ │
+│  │ │    {                                                │ │ │
+│  │ │      "type": "llm_chat",                            │ │ │
+│  │ │      "config": {...}                               │ │ │
+│  │ │    }                                                │ │ │
+│  │ │  ]                                                  │ │ │
+│  │ │}                                                    │ │ │
+│  │ └─────────────────────────────────────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  🔍 Import Preview                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ✅ Configuration valid                                  │ │
+│  │ 📊 Found: 3 nodes, 2 workflows, 5 templates           │ │
+│  │                                                         │ │
+│  │ 🔧 Conflicts Detected:                                 │ │
+│  │ • Node "email_sender" already exists                   │ │
+│  │   Action: [Overwrite ▼] (Skip, Rename, Merge)          │ │
+│  │ • API key for OpenAI differs                           │ │
+│  │   Action: [Keep Existing ▼] (Replace, Merge)           │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ⚙️ Import Options                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ ☑️ Import node configurations                           │ │
+│  │ ☑️ Import templates                                     │ │
+│  │ ☐ Import API keys (requires password)                  │ │
+│  │ ☑️ Import variable definitions                          │ │
+│  │ ☐ Create backup before import                          │ │
+│  │                                                         │ │
+│  │ Decryption Password: [••••••••••] (if encrypted)       │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                             │
+│  [📥 Import Configuration] [👁️ Preview Changes] [❌ Cancel] │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## 🔧 Technical Implementation
