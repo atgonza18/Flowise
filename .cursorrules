@@ -114,6 +114,88 @@ src/
 - Use event-driven architecture
 - Implement proper cancellation handling
 
+## ⚙️ COMPREHENSIVE CONFIGURATION SYSTEM RULES
+
+### Configuration Architecture
+- Implement three-tier hierarchy: Global → Workflow → Node
+- Use NodeConfiguration interface for all configuration types
+- Create ConfigurationManager for validation and persistence
+- Implement proper configuration inheritance and overrides
+- Use type-safe configuration with comprehensive TypeScript interfaces
+- Support configuration versioning and migration
+
+### Configuration UI Standards
+- Create intuitive configuration panels with tabs and sections
+- Implement visual prompt builder with drag-and-drop components
+- Add real-time configuration testing and validation
+- Use consistent parameter controls (sliders, dropdowns, text inputs)
+- Implement configuration preview with live updates
+- Add configuration templates and sharing capabilities
+
+### Credential Management
+- Use AES-256-GCM encryption for all sensitive data
+- Implement credential hierarchy (Global → Workflow → Node)
+- Add automatic credential rotation and expiration
+- Create comprehensive audit logging for all credential access
+- Use secure credential storage with Supabase Vault
+- Implement credential testing and validation
+
+### Variable System
+- Create context-aware variable resolution
+- Support dynamic variable injection from previous nodes
+- Implement safe expression evaluation for variables
+- Add variable type checking and validation
+- Create variable management UI with real-time preview
+- Support workflow-level and system-level variables
+
+### Configuration Testing
+- Implement comprehensive testing framework for all configurations
+- Add real-time configuration validation
+- Create performance monitoring for configuration changes
+- Support test data injection and mock responses
+- Add configuration debugging tools and insights
+- Implement automatic configuration optimization suggestions
+
+### Node-Specific Configuration
+- Create specialized configuration UIs for each node type
+- Database nodes: Visual SQL query builder with parameterized queries
+- Email nodes: Template editor with variable injection
+- Webhook nodes: Request builder with authentication options
+- AI nodes: Advanced prompt builder with template system
+- Logic nodes: Visual condition builder and data transformation tools
+
+### Configuration Import/Export
+- Support encrypted configuration export with selective data inclusion
+- Implement smart configuration import with conflict resolution
+- Add configuration templates for sharing and reuse
+- Create configuration migration system for version updates
+- Support multiple export formats (JSON, YAML, Templates)
+- Implement configuration backup and restore functionality
+
+### Environment Management
+- Support multiple environments (Development, Staging, Production)
+- Implement environment-specific configuration overrides
+- Add environment switching with configuration comparison
+- Create environment-specific credential management
+- Support A/B testing for configuration variations
+- Implement configuration deployment pipelines
+
+### Advanced Configuration Features
+- Add configuration versioning with rollback capabilities
+- Implement configuration change tracking and history
+- Create configuration analytics and usage insights
+- Support configuration templates marketplace
+- Add collaborative configuration editing
+- Implement configuration approval workflows for teams
+
+### Performance & Security
+- Encrypt all configuration data at rest and in transit
+- Implement proper caching for configuration access
+- Use optimized queries for configuration retrieval
+- Add rate limiting for configuration operations
+- Create comprehensive security audit trails
+- Implement proper access control for configuration management
+
 ## 🎨 UI/UX GUIDELINES
 
 ### Design System
