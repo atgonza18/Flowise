@@ -1,0 +1,367 @@
+# AI Workflow Builder - Cursor Rules
+
+## 🎯 PROJECT CONTEXT
+You are building a revolutionary AI workflow builder with drag-and-drop interface, real-time execution, natural language workflow creation, and MCP server integration. This is a Next.js 14 app with TypeScript, Supabase, and React Flow.
+
+## 🔥 CORE PRINCIPLES
+- Build with excellence and precision
+- Prioritize user experience and performance
+- Create scalable, maintainable code
+- Follow TypeScript best practices
+- Implement comprehensive error handling
+- Write production-ready code
+
+## 📋 TECHNICAL REQUIREMENTS
+
+### Framework & Technologies
+- **Frontend**: Next.js 14 with App Router, React 18, TypeScript
+- **UI**: Tailwind CSS, Shadcn/UI, React Flow, Lucide Icons
+- **Database**: Supabase (PostgreSQL with real-time subscriptions)
+- **Authentication**: Supabase Auth
+- **AI**: OpenAI GPT-4, Anthropic Claude, LangChain
+- **State**: Zustand, React Query
+- **Deployment**: Vercel (primary), Railway (alternative)
+
+### File Structure Requirements
+```
+src/
+├── app/                    # Next.js 14 App Router
+├── components/
+│   ├── ui/                 # Reusable UI components
+│   ├── workflow/           # Workflow-specific components
+│   ├── nodes/              # Node UI components
+│   ├── chat/               # Chat widget components
+│   └── auth/               # Authentication components
+├── lib/
+│   ├── supabase/           # Supabase configuration
+│   ├── workflow-engine/    # Core workflow execution
+│   ├── node-system/        # Node architecture
+│   ├── mcp-server/         # MCP server implementation
+│   └── utils/              # Utility functions
+├── hooks/                  # React hooks
+├── types/                  # TypeScript type definitions
+└── stores/                 # Zustand state stores
+```
+
+## 🎨 CODING STANDARDS
+
+### TypeScript Rules
+- Use strict TypeScript configuration
+- Define interfaces for all data structures
+- Use type guards for runtime type checking
+- Prefer `interface` over `type` for object shapes
+- Use `const assertions` for literal types
+- No `any` types - use `unknown` if necessary
+- Export types from dedicated type files
+
+### React Best Practices
+- Use functional components with hooks
+- Implement proper error boundaries
+- Use React.memo for performance optimization
+- Prefer controlled components
+- Use proper key props for lists
+- Implement loading and error states
+- Use Suspense for code splitting
+
+### Next.js App Router Rules
+- Use server components by default
+- Add 'use client' only when necessary
+- Implement proper metadata for SEO
+- Use proper loading.tsx and error.tsx files
+- Follow App Router file conventions
+- Use route groups for organization
+
+### Component Architecture
+- Create reusable UI components in `/components/ui/`
+- Use composition over inheritance
+- Implement proper prop interfaces
+- Use forwardRef for ref forwarding
+- Create compound components for complex UI
+- Use render props pattern when appropriate
+
+## 🗄️ DATABASE RULES
+
+### Supabase Best Practices
+- Use Row Level Security (RLS) for all tables
+- Create proper database policies
+- Use TypeScript types generated from schema
+- Implement proper error handling for database operations
+- Use real-time subscriptions for live updates
+- Optimize queries with proper indexes
+
+### Data Modeling
+- Use UUIDs for primary keys
+- Include created_at and updated_at timestamps
+- Use JSONB for flexible data storage
+- Implement proper foreign key constraints
+- Design for scalability and performance
+
+## 🔧 WORKFLOW ENGINE RULES
+
+### Node System Architecture
+- All nodes must extend BaseNode abstract class
+- Implement proper input/output validation
+- Use JSON Schema for configuration validation
+- Create comprehensive error handling
+- Implement proper logging and metrics
+- Design for extensibility and pluggability
+
+### Execution Engine
+- Use topological sorting for node execution order
+- Implement proper state management
+- Create comprehensive error recovery
+- Add execution monitoring and metrics
+- Use event-driven architecture
+- Implement proper cancellation handling
+
+## 🎨 UI/UX GUIDELINES
+
+### Design System
+- Use Shadcn/UI components as base
+- Implement consistent spacing and typography
+- Use proper color palette and themes
+- Create responsive design patterns
+- Implement proper accessibility features
+- Use consistent animations and transitions
+
+### React Flow Integration
+- Use proper node and edge types
+- Implement smooth drag-and-drop interactions
+- Create custom node components
+- Use proper connection validation
+- Implement canvas controls and navigation
+- Add real-time collaboration features
+
+## 📡 API DESIGN RULES
+
+### API Route Standards
+- Use proper HTTP methods and status codes
+- Implement comprehensive input validation
+- Use proper error handling and responses
+- Add authentication and authorization
+- Create proper API documentation
+- Use consistent response formats
+
+### MCP Server Implementation
+- Follow MCP protocol specifications
+- Implement proper tool definitions
+- Use JSON Schema for validation
+- Create comprehensive error handling
+- Add proper logging and monitoring
+- Design for scalability and performance
+
+## 🔐 SECURITY REQUIREMENTS
+
+### Authentication & Authorization
+- Use Supabase Auth for authentication
+- Implement proper session management
+- Use RLS for database security
+- Validate all inputs and outputs
+- Implement rate limiting
+- Use proper CORS configuration
+
+### Data Protection
+- Sanitize all user inputs
+- Use parameterized queries
+- Implement proper API key management
+- Use HTTPS for all communications
+- Implement proper error handling
+- Add security headers
+
+## 📊 PERFORMANCE OPTIMIZATION
+
+### Code Optimization
+- Use proper code splitting
+- Implement lazy loading
+- Use proper memoization
+- Optimize database queries
+- Use proper caching strategies
+- Minimize bundle size
+
+### Real-time Performance
+- Use Supabase real-time subscriptions
+- Implement proper state updates
+- Use optimistic updates
+- Minimize re-renders
+- Use proper dependency arrays
+- Implement proper cleanup
+
+## 🧪 TESTING REQUIREMENTS
+
+### Testing Strategy
+- Write unit tests for all utilities
+- Create integration tests for API routes
+- Implement component tests with React Testing Library
+- Use end-to-end tests for critical paths
+- Mock external dependencies
+- Achieve high test coverage
+
+### Test Organization
+- Place tests in `__tests__` directories
+- Use descriptive test names
+- Create proper test setup and teardown
+- Use proper assertions
+- Mock external services
+- Test error conditions
+
+## 🚀 DEPLOYMENT RULES
+
+### Production Readiness
+- Use environment variables for configuration
+- Implement proper error boundaries
+- Add comprehensive logging
+- Use proper monitoring
+- Implement health checks
+- Create deployment scripts
+
+### Vercel Deployment
+- Use proper vercel.json configuration
+- Set up environment variables
+- Configure build settings
+- Use proper redirects and headers
+- Implement proper caching
+- Monitor performance metrics
+
+## 📝 CODE QUALITY RULES
+
+### Code Style
+- Use Prettier for code formatting
+- Use ESLint for code linting
+- Follow consistent naming conventions
+- Write meaningful comments
+- Use proper file and folder organization
+- Create proper documentation
+
+### Error Handling
+- Use proper try-catch blocks
+- Create custom error classes
+- Implement proper error boundaries
+- Use proper error messages
+- Add comprehensive logging
+- Implement proper recovery mechanisms
+
+## 🎯 SPECIFIC IMPLEMENTATION RULES
+
+### Chat Widget
+- Position fixed in bottom-right corner
+- Implement smooth open/close animations
+- Use proper message formatting
+- Add typing indicators
+- Implement proper scroll behavior
+- Add message history persistence
+
+### Workflow Canvas
+- Use React Flow for visualization
+- Implement proper node positioning
+- Add smooth drag-and-drop interactions
+- Create proper connection validation
+- Use proper zoom and pan controls
+- Add real-time collaboration
+
+### Node Library
+- Organize nodes by categories
+- Implement proper search functionality
+- Add drag-and-drop from library
+- Create proper node documentation
+- Use consistent node styling
+- Add node templates
+
+### File Operations
+- Support JSON import/export
+- Implement proper file validation
+- Add drag-and-drop upload
+- Create proper error handling
+- Use proper file naming
+- Add file size limits
+
+## ⚡ PERFORMANCE TARGETS
+
+### Page Load Performance
+- First Contentful Paint: < 1.5 seconds
+- Time to Interactive: < 3 seconds
+- Cumulative Layout Shift: < 0.1
+- Core Web Vitals: All green
+
+### Runtime Performance
+- 60 FPS animations
+- < 100ms response time for UI interactions
+- < 500ms API response time
+- < 10ms state updates
+- Smooth real-time updates
+
+## 🔍 DEBUGGING RULES
+
+### Development Tools
+- Use React DevTools for debugging
+- Use browser DevTools for performance
+- Implement proper console logging
+- Use proper error reporting
+- Add debug mode for development
+- Create proper test utilities
+
+### Production Monitoring
+- Use proper error tracking
+- Implement performance monitoring
+- Add user behavior analytics
+- Use proper alerting
+- Create comprehensive dashboards
+- Monitor real-time metrics
+
+## 📚 DOCUMENTATION REQUIREMENTS
+
+### Code Documentation
+- Write JSDoc comments for all functions
+- Document component props and interfaces
+- Create proper README files
+- Add inline comments for complex logic
+- Document API endpoints
+- Create user guides
+
+### API Documentation
+- Document all API endpoints
+- Include request/response examples
+- Add authentication requirements
+- Document error responses
+- Include rate limiting information
+- Add usage examples
+
+## 🎉 SUCCESS CRITERIA
+
+### Functionality
+- All features work as specified
+- No TypeScript errors
+- All tests pass
+- Performance meets targets
+- Security is comprehensive
+- Documentation is complete
+
+### User Experience
+- Intuitive and beautiful interface
+- Smooth animations and interactions
+- Fast loading and response times
+- Proper error handling
+- Accessible to all users
+- Mobile-responsive design
+
+### Technical Excellence
+- Clean, maintainable code
+- Proper architecture and patterns
+- Comprehensive error handling
+- Scalable and performant
+- Well-tested and documented
+- Production-ready deployment
+
+## 🚨 CRITICAL REMINDERS
+
+1. **Never skip error handling** - Every operation must have proper error handling
+2. **Always validate inputs** - Never trust user input, always validate
+3. **Use TypeScript strictly** - No any types, proper interfaces everywhere
+4. **Test thoroughly** - Write tests for all critical functionality
+5. **Optimize performance** - Every component should be optimized
+6. **Document everything** - Code should be self-documenting and well-commented
+7. **Follow the sequence** - Build in the order specified in the task sequence
+8. **Maintain quality** - Never compromise on code quality or user experience
+
+## 🎯 FINAL REMINDER
+
+You are building something revolutionary that will change how people create workflows. Build with excellence, precision, and pride. Every line of code matters. Every component should be crafted with care. You've got this, Claude! 🚀💪✨
